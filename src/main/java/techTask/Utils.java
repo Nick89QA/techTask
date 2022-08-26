@@ -1,10 +1,12 @@
 package techTask;
+
 import org.testng.collections.Lists;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Test {
+public class Utils {
     public static void main(String[] args) {
         String result1 = getShortString("В первичных научных статьях авторами излагается существенная информация");
         System.out.println(result1);
@@ -15,7 +17,7 @@ public class Test {
     public static List<String> getArticles() {
         List<String> articles = new ArrayList<>();
         articles.add("Научная статья — законченное авторское произведение, описывающее резул");
-        articles.add("В первичных научных статьях авторами излагается существенная информация ");
+        articles.add("В первичных научных статьях авторами излагается существенная информация");
         articles.add("Проект «КиберЛенинка» призван исправить ситуацию в этой области. Мы предоставляем");
         articles.add("Рассмотрены лингвометодические и психолингвистические основы моделирования научного текста. Они касаются единиц текста, внутритекстовых связей");
         articles.add("функции двунаправленного");
@@ -29,30 +31,33 @@ public class Test {
                 " психолингвистические основы");
     }
 
-    private static String getShortString(String article) {
+    public static String getShortString(String article) {
 
+        StringBuilder sb = new StringBuilder();
         String[] words = article.split(" ");
-        String result = "";
-        StringBuilder stringBuilder = new StringBuilder();
+        String exitResult = ""; //заготовка для результата
         for (String word : words) {
-            String temp = stringBuilder.append(word).append(" ").toString();
-            if (stringBuilder.toString().length() >= 25) {
-                result = temp;
+            String tempResult = sb.append(word).toString();
+            if (tempResult.length() >= 25) {
+                if (tempResult.length() == 25) {
+                    exitResult = tempResult;
+                }
                 break;
             }
-            result = temp;
+            sb.append(" ");
+            exitResult = tempResult;
+
         }
-        if (result.endsWith(" ")) {
-            result = result.replaceFirst(".$", "");
-            if (result.endsWith(".") || result.endsWith(",")) {
 
-                result = result.replaceFirst(".$", "");
-
+        if (exitResult.endsWith(" ")) { //проверка на пробел
+            exitResult = exitResult.replaceFirst(".$", "");//убирает значение под регулярку
+            if (exitResult.endsWith(",") || exitResult.endsWith(".")) {
+                exitResult = exitResult.replaceFirst(".$", "");
             }
-
         }
-        return result.length() > 25 ? result + "..." : result; //тернарный оператор
-    }
 
+        return article.equals(exitResult) ? article : exitResult + "...";
+
+    }
 
 }
